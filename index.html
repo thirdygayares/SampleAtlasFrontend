@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Table</title>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+        
+        table, th, td {
+            border: 1px solid black;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <table id="studentTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Full Name</th>
+                <th>College</th>
+                <th>Program</th>
+                <th>UMAK Email</th>
+                <th>Personal Email</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+        // Function to fetch data from the API
+        async function fetchStudents() {
+            try {
+                const response = await fetch('http://localhost:8080/api/students');
+                const students = await response.json();
+                
+                // Clear existing table rows
+                const tableBody = document.querySelector('#studentTable tbody');
+                tableBody.innerHTML = '';
+
+                // Populate the table with data
+                students.forEach(student => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${student.studentId}</td>
+                        <td>${student.fullName}</td>
+                        <td>${student.college}</td>
+                        <td>${student.program}</td>
+                        <td>${student.umakEmail}</td>
+                        <td>${student.personalEmail}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        // Call the fetchStudents function to populate the table on page load
+        fetchStudents();
+    </script>
+</body>
+</html>
